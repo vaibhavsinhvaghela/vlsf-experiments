@@ -62,12 +62,12 @@ def extract_answer_choice(response_text, choices, prompt_strategy):
     # Check for direct mentions of choice letters
     for letter in choice_letters:
         patterns = [
-            rf"\b{letter}\b",
-            rf"option\s+{letter}",
-            rf"choice\s+{letter}",
-            rf"answer\s+{letter}",
-            rf"answer is\s+{letter}",
-            rf"\({letter}\)",
+            rf"\b{letter}\b", # The letter by itself (A, B, C)
+            rf"option\s+{letter}", # "option A", "option B"
+            rf"choice\s+{letter}", # "choice A", "choice B"
+            rf"answer\s+{letter}",  # "answer A", "answer B"
+            rf"answer is\s+{letter}",  # "answer is A", "answer is B"
+            rf"\({letter}\)",   # (A), (B), (C)
         ]
         for pattern in patterns:
             if re.search(pattern, response_text, re.IGNORECASE):
