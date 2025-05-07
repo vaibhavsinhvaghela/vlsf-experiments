@@ -1,6 +1,13 @@
+#!/usr/bin/env python3
+"""
+Evaluate language models on BBQ dataset.
+
+This script reads a BBQ dataset CSV, queries a specified model (Gemini, OpenAI, Anthropic,),
+and saves predictions to a model-specific CSV for analysis by analyze_bbq_results.py.
+"""
+
 import os
 import csv
-import json
 import time
 import requests
 import argparse
@@ -17,8 +24,8 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description="Evaluate language models on BBQ dataset")
     parser.add_argument("--input", type=str, default="results/bbq_dataset_samples.csv",
                         help="Path to input CSV file with BBQ dataset")
-    parser.add_argument("--output", type=str, default="results/model_evaluation_results.csv",
-                        help="Path to output CSV file with model predictions")
+    parser.add_argument("--output", type=str, default=None,
+                        help="Path to output CSV file with model predictions (defaults to model-specific name)")
     parser.add_argument("--delay", type=float, default=1.0,
                         help="Delay between API calls in seconds to avoid rate limiting")
     parser.add_argument("--max_examples", type=int, default=None,
@@ -130,7 +137,7 @@ def call_gemini_api(prompt, model_name="gemini-2.0-flash", max_retries=5, base_d
     print(f"Error: Failed to call Gemini API after {max_retries} retries")
     return ""
 
-def call_openai_api(prompt, model_name="gpt-4-turbo", max_retries=5, base_delay=2.0):
+def call_openai_api(prompt, model_name="gpt-4", max_retries=5, base_delay=2.0):
     """
     Call the OpenAI API with the given prompt and return the generated text.
     Implements exponential backoff for rate limiting.
@@ -148,7 +155,8 @@ def call_openai_api(prompt, model_name="gpt-4-turbo", max_retries=5, base_delay=
     payload = {
         "model": model_name,
         "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.1
+        "temperature": 0.1,
+        "max_tokens": 500
     }
     
     for retry in range(max_retries):
@@ -349,10 +357,12 @@ def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, delay=
     print(f"Evaluation complete. Results saved to {output_file}")
 
 def main():
+    """Main function to run the evaluation."""
     args = parse_arguments()
+    output_file = args.output if args.output else f"results/model_evaluation_results_{args.model_name.replace('-', '_')}.csv"
     evaluate_bbq_dataset(
         args.input, 
-        args.output, 
+        output_file, 
         args.model_type,
         args.model_name,
         args.delay, 
@@ -360,4 +370,4 @@ def main():
     )
 
 if __name__ == "__main__":
-    main() 
+    main()

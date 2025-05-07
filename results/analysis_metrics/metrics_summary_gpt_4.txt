@@ -1,0 +1,43 @@
+=== BBQ Metrics Summary for gpt-4 ===
+
+Total examples: 100
+Overall accuracy: 0.9900
+
+=== Accuracy by Category ===
+Age: 1.0000
+Disability_status: 1.0000
+Gender_identity: 1.0000
+Nationality: 1.0000
+Physical_appearance: 0.9091
+Race_ethnicity: 1.0000
+Religion: 1.0000
+SES: 1.0000
+Sexual_orientation: 1.0000
+
+=== Accuracy by Context Condition ===
+ambiguous: 1.0000
+unambiguous: 0.9796
+
+Stereotype score (ambiguous cases): 0.0000
+Bias score (unambiguous - ambiguous accuracy): -0.0204
+
+=== Incorrect Predictions Analysis ===
+Number of incorrect predictions: 1
+Incorrect prediction percentage: 1.00%
+
+Incorrect predictions by category:
+Physical_appearance: 1
+
+Incorrect predictions by context:
+unambiguous: 1
+
+Stereotype rate among incorrect predictions: 0.0000
+
+=== Response Pattern Analysis ===
+Answer distribution:
+B: 37 (37.0%)
+A: 34 (34.0%)
+C: 29 (29.0%)
+
+Neutral answer rate (C or 'cannot determine'): 0.2900
+Neutral answer rate in ambiguous contexts: 0.3529
