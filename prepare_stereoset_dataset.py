@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Create StereoSet results file for metrics analysis.
+Create StereoSet results file for metrics analysis with improved format.
 
 This script loads the StereoSet dataset, iterates through examples, and creates a CSV file
-compatible with metrics analysis.
+with one row per example (containing all three options) for easier evaluation.
 """
 
 import os
@@ -36,7 +36,7 @@ def parse_arguments():
 
 def create_results_file(output_path, num_examples=None, bias_type="all", categories=None, split="validation", seed=42):
     """
-    Create a results file for StereoSet metrics analysis.
+    Create a results file for StereoSet metrics analysis with improved format.
     
     Args:
         output_path: Path to save the output CSV
@@ -125,73 +125,45 @@ def create_results_file(output_path, num_examples=None, bias_type="all", categor
         
         print(f"Selected {len(selected_data)} examples in total")
     
-    # Create results data
+    # Create results data (one row per example instead of three)
     results = []
     for example in tqdm(selected_data, desc="Processing examples"):
         # Get basic example data
         category = example["target"]
         bias_type = example["bias_type"]
+        context = example["context"]
         
-        # Process based on bias type
-        if bias_type == "intersentence":
-            context = example["context"]
-            
-            # Get sentences and labels from the proper structure
-            sentences = example["sentences"]["sentence"]
-            labels = example["sentences"]["gold_label"]
-            
-            # Create a row for each sentence option
-            for i, (sentence, label) in enumerate(zip(sentences, labels)):
-                # Map the label to a more descriptive name
-                if label == 0:
-                    label_name = "stereotype"
-                elif label == 1:
-                    label_name = "anti-stereotype"
-                else:
-                    label_name = "unrelated"
-                
-                correct = True  # Default to True for dataset exploration
-                
-                results.append({
-                    "Category": category,
-                    "Context": context,
-                    "Sentence": sentence,
-                    "Label": label_name,
-                    "Original Label": label,
-                    "Bias Type": "intersentence",
-                    "Option": i,
-                    "Correct": correct
-                })
-        else:  # intrasentence
-            # For intrasentence, the context has a BLANK placeholder
-            context = example["context"]
-            
-            # Get sentences and labels from the proper structure
-            sentences = example["sentences"]["sentence"]
-            labels = example["sentences"]["gold_label"]
-            
-            # Create a row for each sentence option
-            for i, (sentence, label) in enumerate(zip(sentences, labels)):
-                # Map the label to a more descriptive name
-                if label == 0:
-                    label_name = "stereotype"
-                elif label == 1:
-                    label_name = "anti-stereotype"
-                else:
-                    label_name = "unrelated"
-                
-                correct = True  # Default to True for dataset exploration
-                
-                results.append({
-                    "Category": category,
-                    "Context": context,
-                    "Sentence": sentence,
-                    "Label": label_name,
-                    "Original Label": label,
-                    "Bias Type": "intrasentence",
-                    "Option": i,
-                    "Correct": correct
-                })
+        # Get sentences and labels
+        sentences = example["sentences"]["sentence"]
+        labels = example["sentences"]["gold_label"]
+        
+        # Find the sentence for each label type (stereotype, anti-stereotype, unrelated)
+        stereotype_option = None
+        anti_stereotype_option = None
+        unrelated_option = None
+        
+        for sentence, label in zip(sentences, labels):
+            if label == 0:  # Stereotype
+                stereotype_option = sentence
+            elif label == 1:  # Anti-stereotype
+                anti_stereotype_option = sentence
+            elif label == 2:  # Unrelated
+                unrelated_option = sentence
+        
+        # Create a single row with all three options
+        results.append({
+            "Category": category,
+            "Context": context,
+            "Stereotype_Option": stereotype_option,
+            "Anti_Stereotype_Option": anti_stereotype_option,
+            "Unrelated_Option": unrelated_option,
+            "Bias_Type": bias_type,
+            "ID": example.get("id", ""),  # Add ID if available for tracking
+            "Model_Prediction": "",  # Empty field to be filled by evaluation script
+            "Model_Score_Stereotype": "",  # Empty field for model scores
+            "Model_Score_Anti_Stereotype": "",
+            "Model_Score_Unrelated": ""
+        })
     
     # Create directory if it doesn't exist
     output_dir = os.path.dirname(output_path)
@@ -212,14 +184,8 @@ def create_results_file(output_path, num_examples=None, bias_type="all", categor
     for cat, count in cat_counts.items():
         print(f"  {cat}: {count} examples")
     
-    # Label distribution
-    label_counts = df["Label"].value_counts()
-    print("\nLabel Distribution:")
-    for label, count in label_counts.items():
-        print(f"  {label}: {count} examples")
-    
     # Bias type distribution
-    type_counts = df["Bias Type"].value_counts()
+    type_counts = df["Bias_Type"].value_counts()
     print("\nBias Type Distribution:")
     for bias_type, count in type_counts.items():
         print(f"  {bias_type}: {count} examples")
