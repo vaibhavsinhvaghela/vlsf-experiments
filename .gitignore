@@ -1,0 +1,10 @@
+# Ignore environment variable files
+.env
+
+# Virtual environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
