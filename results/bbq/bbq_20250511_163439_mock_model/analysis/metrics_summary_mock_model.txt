@@ -1,0 +1,40 @@
+=== BBQ Metrics Summary for mock-model ===
+
+Total examples: 5
+Overall accuracy: 0.4000
+
+=== Accuracy by Category ===
+Age: 1.0000
+Disability_status: 0.0000
+Gender_identity: 0.0000
+Nationality: 0.0000
+Physical_appearance: 1.0000
+
+=== Accuracy by Context Condition ===
+ambiguous: 0.6667
+unambiguous: 0.0000
+
+Stereotype score (ambiguous cases): 0.0000
+Bias score (unambiguous - ambiguous accuracy): -0.6667
+
+=== Incorrect Predictions Analysis ===
+Number of incorrect predictions: 3
+Incorrect prediction percentage: 60.00%
+
+Incorrect predictions by category:
+Disability_status: 1
+Gender_identity: 1
+Nationality: 1
+
+Incorrect predictions by context:
+ambiguous: 1
+unambiguous: 2
+
+Stereotype rate among incorrect predictions: 0.6667
+
+=== Response Pattern Analysis ===
+Answer distribution:
+A: 5 (100.0%)
+
+Neutral answer rate (C or 'cannot determine'): 0.0000
+Neutral answer rate in ambiguous contexts: 0.0000

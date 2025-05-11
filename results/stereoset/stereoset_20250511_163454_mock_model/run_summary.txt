@@ -1,0 +1,18 @@
+StereoSet Evaluation Pipeline Summary
+=====================================
+
+Run ID: stereoset_20250511_163454_mock_model
+Timestamp: 2025-05-11 16:35:02
+
+Configuration:
+  Model: mock-model
+  Model Type: mock
+  Prompt Strategy: baseline
+  Dataset: StereoSet
+  Examples: 5
+  Bias Types: all
+
+Results Location:
+  Dataset: results/stereoset/stereoset_20250511_163454_mock_model/dataset/stereoset_samples.csv
+  Predictions: results/stereoset/stereoset_20250511_163454_mock_model/predictions/model_predictions.csv
+  Analysis: results/stereoset/stereoset_20250511_163454_mock_model/analysis

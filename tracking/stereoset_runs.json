@@ -1,0 +1,10 @@
+{
+  "stereoset_20250511_163454_mock_model": {
+    "model_name": "mock-model",
+    "model_type": "mock",
+    "num_examples": 5,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250511_163454_mock_model",
+    "timestamp": "2025-05-11T16:35:02.583448"
+  }
+}
