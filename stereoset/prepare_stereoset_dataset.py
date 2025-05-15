@@ -157,7 +157,7 @@ def create_results_file(output_path, num_examples=None, bias_type="all", categor
             "Stereotype_Option": stereotype_option,
             "Anti_Stereotype_Option": anti_stereotype_option,
             "Unrelated_Option": unrelated_option,
-            "Bias Type": bias_type,
+            "Bias_Type": bias_type,
             "ID": example.get("id", ""),  # Add ID if available for tracking
             "Model_Prediction": "",  # Empty field to be filled by evaluation script
             "Model_Score_Stereotype": "",  # Empty field for model scores
@@ -185,26 +185,13 @@ def create_results_file(output_path, num_examples=None, bias_type="all", categor
         print(f"  {cat}: {count} examples")
     
     # Bias type distribution
-    type_counts = df["Bias Type"].value_counts()
+    type_counts = df["Bias_Type"].value_counts()
     print("\nBias Type Distribution:")
     for bias_type, count in type_counts.items():
         print(f"  {bias_type}: {count} examples")
     
     return df
 
-
-def prepare_stereoset_dataset(output_path, num_examples=100, bias_type="all", categories=None, split="validation", seed=42):
-    """
-    Public API for StereoSet pipeline runner.
-    Args:
-        output_path: Path to save the output CSV
-        num_examples: Number of examples to process (None for all)
-        bias_type: Type of bias examples to include (intersentence, intrasentence, or all)
-        categories: List of categories to include (None for all)
-        split: Dataset split to use
-        seed: Random seed for reproducibility
-    """
-    create_results_file(output_path, num_examples, bias_type, categories, split, seed)
 
 def main():
     """Main function."""

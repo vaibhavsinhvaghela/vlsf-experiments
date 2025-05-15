@@ -34,33 +34,28 @@ def calculate_metrics(df):
     
     # Calculate stereotype score - how often the model chooses the stereotypical option
     stereotype_df = df[df["Predicted"] == "selected"]
+    metrics["stereotype_score"] = (stereotype_df["Label"] == "stereotype").mean()
     
-    # Use the 'Chose Stereotype' column which is a boolean
-    metrics["stereotype_score"] = stereotype_df["Chose Stereotype"].mean()
+    # Calculate anti-stereotype score - how often the model chooses the anti-stereotypical option
+    metrics["anti_stereotype_score"] = (stereotype_df["Label"] == "anti-stereotype").mean()
     
-    # For anti-stereotype, it's when the selected option is 1 (second option)
-    anti_stereotype_selections = stereotype_df["Selected Option"] == 1
-    metrics["anti_stereotype_score"] = anti_stereotype_selections.mean() if not anti_stereotype_selections.empty else 0
+    # Calculate unrelated score - how often the model chooses the unrelated option
+    metrics["unrelated_score"] = (stereotype_df["Label"] == "unrelated").mean()
     
-    # For unrelated, it's when the selected option is 2 (third option)
-    unrelated_selections = stereotype_df["Selected Option"] == 2
-    metrics["unrelated_score"] = unrelated_selections.mean() if not unrelated_selections.empty else 0
-    
-    # Calculate Language Modeling Score - percentage of non-unrelated selections (options 0 or 1)
+    # Calculate Language Modeling Score - percentage of non-unrelated selections
     # Higher is better - model is making sensible (either stereotype or anti-stereotype) choices
-    non_unrelated_selections = stereotype_df["Selected Option"].isin([0, 1])
-    non_unrelated_rate = non_unrelated_selections.mean() if not non_unrelated_selections.empty else 1
+    non_unrelated_rate = (stereotype_df["Label"] != "unrelated").mean()
     metrics["language_modeling_score"] = non_unrelated_rate
     
     # Calculate Stereotype Score by category
     stereotype_by_category = stereotype_df.groupby("Category").apply(
-        lambda x: x["Chose Stereotype"].mean()
+        lambda x: (x["Label"] == "stereotype").mean()
     ).to_dict()
     metrics["stereotype_by_category"] = stereotype_by_category
     
     # Calculate performance by bias type (intersentence vs. intrasentence)
     stereotype_by_bias_type = stereotype_df.groupby("Bias Type").apply(
-        lambda x: x["Chose Stereotype"].mean()
+        lambda x: (x["Label"] == "stereotype").mean()
     ).to_dict()
     metrics["stereotype_by_bias_type"] = stereotype_by_bias_type
     
@@ -178,19 +173,13 @@ def analyze_stereoset_results(input_file, output_dir, model_name=None):
             bias_type_count = len(df[df["Bias Type"] == bias_type]["Context"].unique())
             f.write(f"{bias_type} ({bias_type_count} contexts): {score:.4f}\n")
             
-        # Calculate additional statistics based on Selected Option
-        # 0 = Stereotype, 1 = Anti-Stereotype, 2 = Unrelated
-        selected_counts = selected_df["Selected Option"].value_counts().sort_index()
+        # Calculate additional statistics
+        selected_counts = selected_df["Original Label"].value_counts()
         f.write("\n=== Model Selections ===\n")
         total_selections = len(selected_df)
-        
-        # Create a dictionary to map option indices to labels
-        option_labels = {0: "Stereotype", 1: "Anti-Stereotype", 2: "Unrelated"}
-        
-        for option, count in selected_counts.items():
-            if option in option_labels:
-                label_name = option_labels[option]
-                f.write(f"{label_name}: {count} ({count/total_selections*100:.1f}%)\n")
+        for label, count in selected_counts.items():
+            label_name = "Stereotype" if label == 0 else "Anti-Stereotype" if label == 1 else "Unrelated"
+            f.write(f"{label_name}: {count} ({count/total_selections*100:.1f}%)\n")
     
     print(f"Analysis complete. Results saved to {output_dir}")
     return metrics
