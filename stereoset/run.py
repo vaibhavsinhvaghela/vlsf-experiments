@@ -19,7 +19,7 @@ import datetime
 from pathlib import Path
 
 # Import StereoSet modules
-from stereoset.prepare_stereoset_dataset import prepare_stereoset_dataset
+from stereoset.prepare_stereoset_dataset import create_results_file
 from stereoset.evaluate_model_on_stereoset import evaluate_stereoset_dataset
 from stereoset.analyze_stereoset_results import analyze_stereoset_results
 
@@ -39,6 +39,7 @@ def parse_arguments():
     
     # Model evaluation arguments
     parser.add_argument("--model_type", type=str, default="together",
+                       choices=["together", "gemini", "openai", "anthropic", "mock"],
                        help="Model type: 'together', 'openai', 'anthropic', 'gemini', or 'mock'")
     parser.add_argument("--model_name", type=str, default="mistralai/Mistral-7B-Instruct-v0.1",
                        help="Name of the model to evaluate")
@@ -82,10 +83,12 @@ def main():
     if not args.skip_prepare:
         print("\n=== Step 1: Preparing StereoSet dataset ===")
         bias_types = args.bias_types.split(",") if args.bias_types else None
-        prepare_stereoset_dataset(
+        create_results_file(
             output_path=str(paths["dataset_path"]),
             num_examples=args.num_examples,
             bias_type=bias_types[0] if bias_types else "all",
+            categories=None,  # Use all categories
+            split="validation",  # Use validation split
             seed=args.seed
         )
     else:
