@@ -209,6 +209,18 @@ def create_results_file(output_path, num_examples=None, categories=None, split="
     return df
 
 
+def prepare_bbq_dataset(output_path, num_examples=100, categories=None, split="all", seed=42):
+    """
+    Public API for BBQ pipeline runner.
+    Args:
+        output_path: Path to save the output CSV
+        num_examples: Number of examples to process (None for all)
+        categories: List of categories to include (None for all)
+        split: Dataset split to use
+        seed: Random seed for reproducibility
+    """
+    create_results_file(output_path, num_examples, categories, split, seed)
+
 def main():
     """Main function."""
     args = parse_arguments()

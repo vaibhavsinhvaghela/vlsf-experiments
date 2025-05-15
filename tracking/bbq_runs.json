@@ -1,0 +1,11 @@
+{
+  "bbq_20250511_163439_mock_model": {
+    "model_name": "mock-model",
+    "model_type": "mock",
+    "num_examples": 5,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250511_163439_mock_model",
+    "split": "all",
+    "timestamp": "2025-05-11T16:34:49.330627"
+  }
+}

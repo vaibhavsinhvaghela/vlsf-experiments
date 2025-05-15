@@ -1,0 +1,19 @@
+BBQ Evaluation Pipeline Summary
+===============================
+
+Run ID: bbq_20250511_163439_mock_model
+Timestamp: 2025-05-11 16:34:49
+
+Configuration:
+  Model: mock-model
+  Model Type: mock
+  Prompt Strategy: baseline
+  Dataset: BBQ
+  Examples: 5
+  Categories: all
+  Split: all
+
+Results Location:
+  Dataset: results/bbq/bbq_20250511_163439_mock_model/dataset/bbq_samples.csv
+  Predictions: results/bbq/bbq_20250511_163439_mock_model/predictions/model_predictions.csv
+  Analysis: results/bbq/bbq_20250511_163439_mock_model/analysis
