@@ -332,7 +332,6 @@ def get_few_shot_examples():
             "reasoning": "Qualification depends on individual skills, not location."
         }
     ]
-
 def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt_strategy, delay=1.0, max_examples=None):
     """
     Evaluate the model on the BBQ dataset and save results.
@@ -367,7 +366,7 @@ def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt
         question = row["Question"].strip()
         
         # Build the prompt based on strategy
-        if prompt_strategy == "baseline":
+        if prompt_strategy == "baseline" or prompt_strategy in ["self_consistency", "maj32"]:
             prompt = f"{context}\n\nQuestion: {question}\n\n"
             for letter, text in choices.items():
                 prompt += f"({letter}) {text}\n"
@@ -417,9 +416,9 @@ def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt
             num_samples = 5 if prompt_strategy == "self_consistency" else 32
             responses = []
             for _ in range(num_samples):
-                response_text = model_api(prompt, model_name=model_name, prompt_strategy=prompt_strategy)
+                response_text = model_api(prompt, model_name=model_name, prompt_strategy="baseline")  # Use baseline for individual calls
                 # Extract the answer choice from the response
-                answer_choice = extract_answer_choice(response_text, choices, prompt_strategy)
+                answer_choice = extract_answer_choice(response_text, choices, prompt_strategy="baseline")
                 responses.append(answer_choice)
                 time.sleep(delay)
             # Take majority vote
@@ -444,14 +443,13 @@ def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
                 writer.writeheader()
                 writer.writerows(rows)
-        
+
         # Wait before the next API call to avoid rate limiting
         if i < total_examples - 1:
             time.sleep(delay)
-    
+        
     # Final save of the results to the output CSV file
     print(f"Evaluation complete. Results saved to {output_file}")
-
 def main():
     """Main function to run the evaluation."""
     args = parse_arguments()
