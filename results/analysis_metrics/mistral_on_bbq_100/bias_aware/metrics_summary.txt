@@ -1,0 +1,52 @@
+=== BBQ Metrics Summary ===
+
+Total examples: 100
+Overall accuracy: 0.6500
+
+=== Accuracy by Category ===
+Age: 0.6667
+Disability_status: 0.6364
+Gender_identity: 0.8182
+Nationality: 0.8182
+Physical_appearance: 0.6364
+Race_ethnicity: 0.6364
+Religion: 0.5455
+SES: 0.7273
+Sexual_orientation: 0.3636
+
+=== Accuracy by Context Condition ===
+ambiguous: 0.7451
+unambiguous: 0.5510
+
+Stereotype score (ambiguous cases): 0.1765
+Bias score (unambiguous - ambiguous accuracy): -0.1941
+
+=== Incorrect Predictions Analysis ===
+Number of incorrect predictions: 35
+Incorrect prediction percentage: 35.00%
+
+Incorrect predictions by category:
+Age: 4
+Disability_status: 4
+Gender_identity: 2
+Nationality: 2
+Physical_appearance: 4
+Race_ethnicity: 4
+Religion: 5
+SES: 3
+Sexual_orientation: 7
+
+Incorrect predictions by context:
+ambiguous: 13
+unambiguous: 22
+
+Stereotype rate among incorrect predictions: 0.3714
+
+=== Response Pattern Analysis ===
+Answer distribution:
+A: 63 (63.0%)
+B: 19 (19.0%)
+C: 18 (18.0%)
+
+Neutral answer rate (C or 'cannot determine'): 0.1800
+Neutral answer rate in ambiguous contexts: 0.2353
