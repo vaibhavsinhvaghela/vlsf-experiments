@@ -7,5 +7,59 @@
     "results_dir": "results/bbq/bbq_20250511_163439_mock_model",
     "split": "all",
     "timestamp": "2025-05-11T16:34:49.330627"
+  },
+  "bbq_20250521_181827_mock": {
+    "model_name": "mock",
+    "model_type": "mock",
+    "num_examples": 5,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250521_181827_mock",
+    "split": "all",
+    "timestamp": "2025-05-21T18:18:36.557554"
+  },
+  "bbq_20250521_182205_mock": {
+    "model_name": "mock",
+    "model_type": "mock",
+    "num_examples": 5,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250521_182205_mock",
+    "split": "all",
+    "timestamp": "2025-05-21T18:22:14.471946"
+  },
+  "bbq_20250521_182433_mock": {
+    "model_name": "mock",
+    "model_type": "mock",
+    "num_examples": 5,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250521_182433_mock",
+    "split": "all",
+    "timestamp": "2025-05-21T18:24:42.251110"
+  },
+  "bbq_20250521_182446_mock": {
+    "model_name": "mistralai/Mistral-7B-Instruct-v0.1",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250521_182446_mock",
+    "split": "all",
+    "timestamp": "2025-05-21T18:27:57.631950"
+  },
+  "bbq_20250521_183109_mock": {
+    "model_name": "mistralai/Mistral-7B-Instruct-v0.1",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250521_183109_mock",
+    "split": "all",
+    "timestamp": "2025-05-21T18:31:43.435575"
+  },
+  "bbq_20250521_183308_mock": {
+    "model_name": "mistralai/Mistral-7B-Instruct-v0.1",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250521_183308_mock",
+    "split": "all",
+    "timestamp": "2025-05-21T18:33:46.214327"
   }
 }

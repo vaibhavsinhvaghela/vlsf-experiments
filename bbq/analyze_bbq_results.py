@@ -184,9 +184,8 @@ def analyze_bbq_results(input_file, output_dir, model_name=None):
     # Generate plots
     generate_plots(df, metrics, output_dir, model_name)
     
-    # Create model suffix for file names
-    model_suffix = f"_{model_name.lower().replace('-', '_')}" if model_name else ""
-    metrics_filename = f"metrics_summary{model_suffix}.txt"
+    # Use a consistent filename for metrics summary
+    metrics_filename = "metrics_summary.txt"
     
     # Save metrics to file
     metrics_path = os.path.join(output_dir, metrics_filename)

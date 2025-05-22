@@ -220,7 +220,8 @@ def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt
             prompt += "\nExplain which is correct and why. Answer with the letter (A, B, or C)."
         
         # Call the model API
-        print(f"[{i+1}/{total_examples}] Calling {model_type} API for example in category: {row['Category']}")
+        api_name = "MOCK" if model_type == "mock" else model_type.upper()
+        print(f"[{i+1}/{total_examples}] Calling {api_name} API for example in category: {row['Category']}")
         
         if prompt_strategy in ["self_consistency", "maj32"]:
             num_samples = 5 if prompt_strategy == "self_consistency" else 32

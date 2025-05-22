@@ -1,0 +1,19 @@
+StereoSet Evaluation Pipeline Summary
+=====================================
+
+Run ID: stereoset_20250521_183558_mock
+Timestamp: 2025-05-21 18:36:38
+
+Configuration:
+  Model: mistralai/Mistral-7B-Instruct-v0.1
+  Model Type: together
+  Prompt Strategy: baseline
+  Dataset: StereoSet
+  Examples: 100
+  Bias Types: all
+  Completed Steps: ['prepare', 'evaluate', 'analyze']
+
+Results Location:
+  Dataset: results/stereoset/stereoset_20250521_183558_mock/dataset/stereoset_samples.csv
+  Predictions: results/stereoset/stereoset_20250521_183558_mock/predictions/model_predictions.csv
+  Analysis: results/stereoset/stereoset_20250521_183558_mock/analysis

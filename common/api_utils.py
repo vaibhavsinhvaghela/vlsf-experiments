@@ -152,6 +152,7 @@ def mock_api_call(prompt, model_name="mock", **kwargs):
     """
     Mock API for testing purposes. Returns a simulated response.
     """
+    print("Using MOCK API - no actual API call is being made")
     choices = {}
     choice_pattern = r'\(([A-C])\)\s+(.*?)(?=\([A-C]\)|$)'
     matches = re.findall(choice_pattern, prompt)

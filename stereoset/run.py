@@ -152,10 +152,12 @@ def run_evaluate_step(paths, args):
 )
 def run_analyze_step(paths, args):
     """Run the analysis step with backoff for retries"""
+    # Use 'mock' as the model name when using mock model type
+    model_name = "mock" if args.model_type == "mock" else args.model_name
     analyze_stereoset_results(
         str(paths["predictions_path"]),
         str(paths["analysis_dir"]),
-        args.model_name
+        model_name
     )
     return True
 
@@ -171,6 +173,19 @@ def main():
             completed_steps = checkpoint_data["completed_steps"]
             # Convert paths back to Path objects
             paths = {k: Path(v) for k, v in checkpoint_data["paths"].items()}
+            
+            # Restore important args from checkpoint unless explicitly overridden
+            if "args" in checkpoint_data:
+                checkpoint_args = checkpoint_data["args"]
+                # Only restore model_type if not explicitly provided in command line
+                if not args.model_type and "model_type" in checkpoint_args:
+                    args.model_type = checkpoint_args["model_type"]
+                    print(f"Restored model_type from checkpoint: {args.model_type}")
+                # Only restore model_name if not explicitly provided in command line
+                if not args.model_name and "model_name" in checkpoint_args:
+                    args.model_name = checkpoint_args["model_name"]
+                    print(f"Restored model_name from checkpoint: {args.model_name}")
+            
             print(f"Resuming from checkpoint with run ID: {args.run_id}")
             print(f"Completed steps: {', '.join(completed_steps)}")
         else:

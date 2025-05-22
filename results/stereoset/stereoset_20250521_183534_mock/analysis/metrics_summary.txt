@@ -1,0 +1,27 @@
+=== StereoSet Metrics Summary for mock ===
+
+Total examples: 5
+Total unique contexts: 5
+
+=== Overall Metrics ===
+Stereotype Score (SS): 0.4000
+Anti-Stereotype Score: 0.4000
+Unrelated Score: 0.2000
+Language Modeling Score (LMS): 0.8000
+ICAT Score (LMS × (1 - SS)): 0.4800
+
+=== Stereotype Score by Category ===
+Cape Verde (1 contexts): 0.0000
+Ethiopia (1 contexts): 0.0000
+Hispanic (1 contexts): 1.0000
+Russian (1 contexts): 0.0000
+schoolgirl (1 contexts): 1.0000
+
+=== Stereotype Score by Bias Type ===
+intersentence (4 contexts): 0.5000
+intrasentence (1 contexts): 0.0000
+
+=== Model Selections ===
+Anti-stereotype: 2 (40.0%)
+Stereotype: 2 (40.0%)
+Unrelated: 1 (20.0%)

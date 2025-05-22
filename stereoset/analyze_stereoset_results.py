@@ -143,13 +143,11 @@ def analyze_stereoset_results(input_file, output_dir, model_name=None):
     # Generate plots
     generate_plots(df, metrics, output_dir, model_name)
     
-    # Create model suffix for file names
-    model_suffix = f"_{model_name.lower().replace('-', '_')}" if model_name else ""
-    metrics_dir = os.path.join(output_dir, f"metrics_summary{model_suffix}")
-    os.makedirs(metrics_dir, exist_ok=True)
+    # Use a consistent filename for metrics summary
+    metrics_filename = "metrics_summary.txt"
     
     # Save metrics to file
-    metrics_path = os.path.join(metrics_dir, "metrics_summary.txt")
+    metrics_path = os.path.join(output_dir, metrics_filename)
     with open(metrics_path, "w") as f:
         f.write(f"=== StereoSet Metrics Summary{' for ' + model_name if model_name else ''} ===\n\n")
         f.write(f"Total examples: {len(df)}\n")
