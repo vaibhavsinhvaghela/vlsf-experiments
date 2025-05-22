@@ -40,6 +40,10 @@ def parse_arguments():
     parser.add_argument("--prompt_strategy", type=str, default="baseline",
                         choices=["baseline", "cot", "self_consistency", "maj32", "few_shot", "bias_aware", "structured", "contrastive"],
                         help="Prompting strategy")
+    parser.add_argument("--max_retries", type=int, default=5,
+                        help="Maximum number of retries for API calls")
+    parser.add_argument("--base_delay", type=float, default=2.0,
+                        help="Base delay for exponential backoff in seconds")
     return parser.parse_args()
 
 def extract_answer_choice(response_text, choices, prompt_strategy):
@@ -126,9 +130,20 @@ def get_few_shot_examples():
         }
     ]
 
-def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt_strategy, delay=1.0, max_examples=None):
+def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt_strategy, delay=1.0, max_examples=None, max_retries=5, base_delay=2.0):
     """
     Evaluate the model on the BBQ dataset and save results.
+    
+    Args:
+        input_file: Path to the input CSV file with BBQ dataset
+        output_file: Path to save the evaluation results
+        model_type: Type of model to use (together, gemini, openai, anthropic, mock)
+        model_name: Specific model name to use
+        prompt_strategy: Strategy for prompting the model
+        delay: Delay between API calls in seconds
+        max_examples: Maximum number of examples to process
+        max_retries: Maximum number of retries for API calls
+        base_delay: Base delay for exponential backoff in seconds
     """
     # Read the input CSV file
     with open(input_file, mode='r', encoding='utf-8') as file:
@@ -141,6 +156,7 @@ def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt
     
     total_examples = len(rows)
     print(f"Processing {total_examples} examples from {input_file} using {model_type} model: {model_name} with {prompt_strategy} strategy")
+    print(f"Using backoff strategy with max_retries={max_retries}, base_delay={base_delay}s")
     
     # Get the appropriate API function
     model_api = get_model_api(model_type)
@@ -256,7 +272,9 @@ def main():
         args.model_name,
         args.prompt_strategy,
         args.delay, 
-        args.max_examples
+        args.max_examples,
+        args.max_retries if hasattr(args, 'max_retries') else 5,
+        args.base_delay if hasattr(args, 'base_delay') else 2.0
     )
 
 if __name__ == "__main__":

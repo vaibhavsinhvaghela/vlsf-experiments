@@ -15,6 +15,8 @@ import os
 import sys
 import argparse
 import datetime
+import json
+import backoff
 from pathlib import Path
 
 # Import BBQ modules
@@ -49,6 +51,10 @@ def parse_arguments():
                        help="Delay between API calls in seconds")
     parser.add_argument("--max_examples", type=int, default=None,
                        help="Maximum number of examples to evaluate (default: all)")
+    parser.add_argument("--max_retries", type=int, default=5,
+                       help="Maximum number of retries for API calls")
+    parser.add_argument("--base_delay", type=float, default=2.0,
+                       help="Base delay for exponential backoff in seconds")
     
     # Output organization
     parser.add_argument("--results_dir", type=str, default="results",
@@ -61,61 +67,161 @@ def parse_arguments():
                        help="Skip model evaluation step")
     parser.add_argument("--skip_analyze", action="store_true",
                        help="Skip results analysis step")
+    parser.add_argument("--checkpoint", type=str, default=None,
+                       help="Path to checkpoint file to resume from")
+    parser.add_argument("--save_checkpoint", action="store_true",
+                       help="Save checkpoint after each step")
     
     return parser.parse_args()
 
 
 
+def save_checkpoint(checkpoint_path, completed_steps, paths, args):
+    """
+    Save checkpoint information to a JSON file.
+    """
+    checkpoint_data = {
+        "run_id": args.run_id,
+        "completed_steps": completed_steps,
+        "paths": {k: str(v) for k, v in paths.items()},
+        "args": vars(args)
+    }
+    
+    with open(checkpoint_path, 'w') as f:
+        json.dump(checkpoint_data, f, indent=2)
+    
+    print(f"Checkpoint saved to: {checkpoint_path}")
+
+def load_checkpoint(checkpoint_path):
+    """
+    Load checkpoint information from a JSON file.
+    """
+    try:
+        with open(checkpoint_path, 'r') as f:
+            checkpoint_data = json.load(f)
+        print(f"Loaded checkpoint from: {checkpoint_path}")
+        return checkpoint_data
+    except Exception as e:
+        print(f"Error loading checkpoint: {e}")
+        return None
+
+@backoff.on_exception(
+    backoff.expo,
+    Exception,
+    max_tries=3,
+    on_backoff=lambda details: print(f"Backing off {details['wait']:0.1f} seconds after {details['tries']} tries")
+)
+def run_prepare_step(paths, args):
+    """Run the preparation step with backoff for retries"""
+    categories = args.categories.split(",") if args.categories else None
+    prepare_bbq_dataset(
+        output_path=str(paths["dataset_path"]),
+        num_examples=args.num_examples,
+        categories=categories,
+        split=args.split,
+        seed=args.seed
+    )
+    return True
+
+@backoff.on_exception(
+    backoff.expo,
+    Exception,
+    max_tries=3,
+    on_backoff=lambda details: print(f"Backing off {details['wait']:0.1f} seconds after {details['tries']} tries")
+)
+def run_evaluate_step(paths, args):
+    """Run the evaluation step with backoff for retries"""
+    evaluate_bbq_dataset(
+        str(paths["dataset_path"]),
+        str(paths["predictions_path"]),
+        args.model_type,
+        args.model_name,
+        args.prompt_strategy,
+        args.delay,
+        args.max_examples,
+        args.max_retries if hasattr(args, 'max_retries') else 5,
+        args.base_delay if hasattr(args, 'base_delay') else 2.0
+    )
+    return True
+
+@backoff.on_exception(
+    backoff.expo,
+    Exception,
+    max_tries=3,
+    on_backoff=lambda details: print(f"Backing off {details['wait']:0.1f} seconds after {details['tries']} tries")
+)
+def run_analyze_step(paths, args):
+    """Run the analysis step with backoff for retries"""
+    analyze_bbq_results(
+        str(paths["predictions_path"]),
+        str(paths["analysis_dir"]),
+        args.model_name
+    )
+    return True
+
 def main():
     args = parse_arguments()
+    completed_steps = []
     
-    # Generate run ID if not provided
-    if not args.run_id:
-        args.run_id = generate_run_id("bbq", args.model_name)
-    
-    # Setup directory structure
-    paths = setup_directories(args.results_dir, "bbq", args.run_id)
+    # Load from checkpoint if specified
+    if args.checkpoint:
+        checkpoint_data = load_checkpoint(args.checkpoint)
+        if checkpoint_data:
+            args.run_id = checkpoint_data["run_id"]
+            completed_steps = checkpoint_data["completed_steps"]
+            # Convert paths back to Path objects
+            paths = {k: Path(v) for k, v in checkpoint_data["paths"].items()}
+            print(f"Resuming from checkpoint with run ID: {args.run_id}")
+            print(f"Completed steps: {', '.join(completed_steps)}")
+        else:
+            # Generate run ID if not provided and no valid checkpoint
+            if not args.run_id:
+                args.run_id = generate_run_id("bbq", args.model_name)
+            # Setup directory structure
+            paths = setup_directories(args.results_dir, "bbq", args.run_id)
+    else:
+        # Generate run ID if not provided
+        if not args.run_id:
+            args.run_id = generate_run_id("bbq", args.model_name)
+        # Setup directory structure
+        paths = setup_directories(args.results_dir, "bbq", args.run_id)
     
     print(f"Starting BBQ pipeline with run ID: {args.run_id}")
     print(f"Results will be saved to: {paths['run_dir']}")
     
+    # Define checkpoint path
+    checkpoint_path = paths["run_dir"] / "checkpoint.json"
+    
     # Step 1: Prepare dataset
-    if not args.skip_prepare:
+    if not args.skip_prepare and "prepare" not in completed_steps:
         print("\n=== Step 1: Preparing BBQ dataset ===")
-        categories = args.categories.split(",") if args.categories else None
-        prepare_bbq_dataset(
-            output_path=str(paths["dataset_path"]),
-            num_examples=args.num_examples,
-            categories=categories,
-            split=args.split,
-            seed=args.seed
-        )
+        success = run_prepare_step(paths, args)
+        if success:
+            completed_steps.append("prepare")
+            if args.save_checkpoint:
+                save_checkpoint(checkpoint_path, completed_steps, paths, args)
     else:
         print("\n=== Skipping dataset preparation ===")
     
     # Step 2: Evaluate model
-    if not args.skip_evaluate:
+    if not args.skip_evaluate and "evaluate" not in completed_steps:
         print("\n=== Step 2: Evaluating model on BBQ dataset ===")
-        evaluate_bbq_dataset(
-            str(paths["dataset_path"]),
-            str(paths["predictions_path"]),
-            args.model_type,
-            args.model_name,
-            args.prompt_strategy,
-            args.delay,
-            args.max_examples
-        )
+        success = run_evaluate_step(paths, args)
+        if success:
+            completed_steps.append("evaluate")
+            if args.save_checkpoint:
+                save_checkpoint(checkpoint_path, completed_steps, paths, args)
     else:
         print("\n=== Skipping model evaluation ===")
     
     # Step 3: Analyze results
-    if not args.skip_analyze:
+    if not args.skip_analyze and "analyze" not in completed_steps:
         print("\n=== Step 3: Analyzing results ===")
-        analyze_bbq_results(
-            str(paths["predictions_path"]),
-            str(paths["analysis_dir"]),
-            args.model_name
-        )
+        success = run_analyze_step(paths, args)
+        if success:
+            completed_steps.append("analyze")
+            if args.save_checkpoint:
+                save_checkpoint(checkpoint_path, completed_steps, paths, args)
     else:
         print("\n=== Skipping results analysis ===")
     
@@ -131,7 +237,8 @@ def main():
         "Dataset": "BBQ",
         "Examples": args.num_examples,
         "Categories": args.categories if args.categories else "all",
-        "Split": args.split if args.split else "all"
+        "Split": args.split if args.split else "all",
+        "Completed Steps": completed_steps
     }
     
     write_summary_file(
@@ -150,7 +257,7 @@ def main():
         # Extract metrics from analysis if available
         metrics = {}
         metrics_file = paths["analysis_dir"] / "metrics.json"
-        if metrics_file.exists() and not args.skip_analyze:
+        if metrics_file.exists() and (not args.skip_analyze or "analyze" in completed_steps):
             try:
                 with open(metrics_file, 'r') as f:
                     metrics = json.load(f)
