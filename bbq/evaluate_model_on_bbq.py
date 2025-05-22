@@ -10,19 +10,17 @@ import os
 import csv
 import json
 import time
-import requests
 import argparse
-from dotenv import load_dotenv
 import re
 from collections import Counter
-from together import Together
-
-# Load environment variables
-load_dotenv()
-TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+from common.api_utils import (
+    call_together_api,
+    call_openai_api,
+    call_anthropic_api,
+    call_gemini_api,
+    mock_api_call,
+    get_model_api
+)
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Evaluate language models on BBQ dataset")
@@ -42,6 +40,10 @@ def parse_arguments():
     parser.add_argument("--prompt_strategy", type=str, default="baseline",
                         choices=["baseline", "cot", "self_consistency", "maj32", "few_shot", "bias_aware", "structured", "contrastive"],
                         help="Prompting strategy")
+    parser.add_argument("--max_retries", type=int, default=5,
+                        help="Maximum number of retries for API calls")
+    parser.add_argument("--base_delay", type=float, default=2.0,
+                        help="Base delay for exponential backoff in seconds")
     return parser.parse_args()
 
 def extract_answer_choice(response_text, choices, prompt_strategy):
@@ -107,211 +109,6 @@ def call_together_api(prompt, model_name, prompt_strategy="baseline", max_retrie
     """
     if not TOGETHER_API_KEY:
         raise ValueError("TOGETHER_API_KEY not found in .env file")
-    
-    client = Together(api_key=TOGETHER_API_KEY)
-    # Wrap prompt in [INST] for Mixtral, optional for Qwen
-    prompt = f"[INST] {prompt} [/INST]" if "Mixtral" in model_name else prompt
-    
-    for retry in range(max_retries):
-        try:
-            if prompt_strategy == "structured":
-                response = client.chat.completions.create(
-                    model=model_name,
-                    messages=[{"role": "user", "content": prompt}],
-                    response_format={"type": "json_object"},
-                    temperature=0.1,
-                    max_tokens=500
-                )
-            else:
-                response = client.chat.completions.create(
-                    model=model_name,
-                    messages=[{"role": "user", "content": prompt}],
-                    temperature=0.1,
-                    max_tokens=500
-                )
-            return response.choices[0].message.content
-        except Exception as e:
-            if "rate limit" in str(e).lower():
-                wait_time = base_delay * (2 ** retry)
-                print(f"Rate limited. Waiting {wait_time:.1f} seconds before retry {retry+1}/{max_retries}")
-                time.sleep(wait_time)
-                continue
-            print(f"API request error: {e}")
-            return ""
-    print(f"Error: Failed to call Together API after {max_retries} retries")
-    return ""
-
-def call_gemini_api(prompt, model_name="gemini-2.0-flash", max_retries=5, base_delay=2.0):
-    """
-    Call the Gemini API with the given prompt and return the generated text.
-    Implements exponential backoff for rate limiting.
-    """
-    if not GEMINI_API_KEY:
-        raise ValueError("GEMINI_API_KEY not found in .env file")
-        
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_API_KEY}"
-    
-    payload = {
-        "contents": [{
-            "parts": [{"text": prompt}]
-        }]
-    }
-    
-    for retry in range(max_retries):
-        try:
-            response = requests.post(url, json=payload)
-            if response.status_code == 429:
-                wait_time = base_delay * (2 ** retry)
-                print(f"Rate limited. Waiting {wait_time:.1f} seconds before retry {retry+1}/{max_retries}")
-                time.sleep(wait_time)
-                continue
-            response.raise_for_status()
-            data = response.json()
-            if "candidates" in data and len(data["candidates"]) > 0:
-                content = data["candidates"][0].get("content", {})
-                parts = content.get("parts", [])
-                if parts and "text" in parts[0]:
-                    return parts[0]["text"]
-            print(f"Warning: Unexpected API response format: {data}")
-            return ""
-        except requests.exceptions.RequestException as e:
-            wait_time = base_delay * (2 ** retry)
-            print(f"API request error: {e}. Waiting {wait_time:.1f} seconds before retry {retry+1}/{max_retries}")
-            time.sleep(wait_time)
-    print(f"Error: Failed to call Gemini API after {max_retries} retries")
-    return ""
-
-def call_openai_api(prompt, model_name="gpt-4", max_retries=5, base_delay=2.0):
-    """
-    Call the OpenAI API with the given prompt and return the generated text.
-    Implements exponential backoff for rate limiting.
-    """
-    if not OPENAI_API_KEY:
-        raise ValueError("OPENAI_API_KEY not found in .env file")
-        
-    url = "https://api.openai.com/v1/chat/completions"
-    
-    headers = {
-        "Authorization": f"Bearer {OPENAI_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "model": model_name,
-        "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.1,
-        "max_tokens": 500
-    }
-    
-    for retry in range(max_retries):
-        try:
-            response = requests.post(url, headers=headers, json=payload)
-            if response.status_code == 429:
-                wait_time = base_delay * (2 ** retry)
-                print(f"Rate limited. Waiting {wait_time:.1f} seconds before retry {retry+1}/{max_retries}")
-                time.sleep(wait_time)
-                continue
-            response.raise_for_status()
-            data = response.json()
-            if "choices" in data and len(data["choices"]) > 0:
-                return data["choices"][0]["message"]["content"]
-            print(f"Warning: Unexpected API response format: {data}")
-            return ""
-        except requests.exceptions.RequestException as e:
-            wait_time = base_delay * (2 ** retry)
-            print(f"API request error: {e}. Waiting {wait_time:.1f} seconds before retry {retry+1}/{max_retries}")
-            time.sleep(wait_time)
-    print(f"Error: Failed to call OpenAI API after {max_retries} retries")
-    return ""
-
-def call_anthropic_api(prompt, model_name="claude-3-opus-20240229", max_retries=5, base_delay=2.0):
-    """
-    Call the Anthropic API with the given prompt and return the generated text.
-    Implements exponential backoff for rate limiting.
-    """
-    if not ANTHROPIC_API_KEY:
-        raise ValueError("ANTHROPIC_API_KEY not found in .env file")
-        
-    url = "https://api.anthropic.com/v1/messages"
-    
-    headers = {
-        "anthropic-version": "2023-06-01",
-        "x-api-key": ANTHROPIC_API_KEY,
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "model": model_name,
-        "messages": [{"role": "user", "content": prompt}],
-        "max_tokens": 100,
-        "temperature": 0.1
-    }
-    
-    for retry in range(max_retries):
-        try:
-            response = requests.post(url, headers=headers, json=payload)
-            if response.status_code == 429:
-                wait_time = base_delay * (2 ** retry)
-                print(f"Rate limited. Waiting {wait_time:.1f} seconds before retry {retry+1}/{max_retries}")
-                time.sleep(wait_time)
-                continue
-            response.raise_for_status()
-            data = response.json()
-            if "content" in data and len(data["content"]) > 0:
-                return data["content"][0]["text"]
-            print(f"Warning: Unexpected API response format: {data}")
-            return ""
-        except requests.exceptions.RequestException as e:
-            wait_time = base_delay * (2 ** retry)
-            print(f"API request error: {e}. Waiting {wait_time:.1f} seconds before retry {retry+1}/{max_retries}")
-            time.sleep(wait_time)
-    print(f"Error: Failed to call Anthropic API after {max_retries} retries")
-    return ""
-
-def mock_api_call(prompt, model_name="mock", **kwargs):
-    """
-    Mock API for testing purposes. Returns a simulated response.
-    """
-    # Extract the question and choices to generate a deterministic but reasonable response
-    choices = {}
-    choice_pattern = r'\(([A-C])\)\s+(.*?)(?=\([A-C]\)|$)'
-    matches = re.findall(choice_pattern, prompt)
-    for letter, text in matches:
-        choices[letter] = text.strip()
-    
-    # Get question text
-    question_match = re.search(r'Question:\s*(.*?)\n', prompt)
-    question = question_match.group(1) if question_match else ""
-    
-    # Simple rule: if "not" or "cannot" appears in choice C, pick that
-    # Otherwise, pick randomly with preference for balanced responses
-    if 'C' in choices and re.search(r'\b(not|cannot|undetermined|unknown)\b', choices['C'], re.IGNORECASE):
-        return "The answer is C."
-    elif question.lower().startswith("who"):
-        if "ambiguous" in prompt.lower() or "unclear" in prompt.lower():
-            return "Based on the context, I would choose B as there is insufficient information to determine."
-        else:
-            return "A"
-    else:
-        return f"I believe the correct answer is {'A' if hash(prompt) % 3 == 0 else 'B' if hash(prompt) % 3 == 1 else 'C'}"
-
-def get_model_api(model_type):
-    """
-    Returns the appropriate API function based on model type.
-    """
-    api_functions = {
-        "together": call_together_api,
-        "gemini": call_gemini_api,
-        "openai": call_openai_api,
-        "anthropic": call_anthropic_api,
-        "mock": mock_api_call
-    }
-    
-    if model_type not in api_functions:
-        raise ValueError(f"Unsupported model type: {model_type}")
-    
-    return api_functions[model_type]
-
 def get_few_shot_examples():
     """
     Return a list of few-shot examples for BBQ dataset.
@@ -333,9 +130,20 @@ def get_few_shot_examples():
         }
     ]
 
-def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt_strategy, delay=1.0, max_examples=None):
+def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt_strategy, delay=1.0, max_examples=None, max_retries=5, base_delay=2.0):
     """
     Evaluate the model on the BBQ dataset and save results.
+    
+    Args:
+        input_file: Path to the input CSV file with BBQ dataset
+        output_file: Path to save the evaluation results
+        model_type: Type of model to use (together, gemini, openai, anthropic, mock)
+        model_name: Specific model name to use
+        prompt_strategy: Strategy for prompting the model
+        delay: Delay between API calls in seconds
+        max_examples: Maximum number of examples to process
+        max_retries: Maximum number of retries for API calls
+        base_delay: Base delay for exponential backoff in seconds
     """
     # Read the input CSV file
     with open(input_file, mode='r', encoding='utf-8') as file:
@@ -348,6 +156,7 @@ def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt
     
     total_examples = len(rows)
     print(f"Processing {total_examples} examples from {input_file} using {model_type} model: {model_name} with {prompt_strategy} strategy")
+    print(f"Using backoff strategy with max_retries={max_retries}, base_delay={base_delay}s")
     
     # Get the appropriate API function
     model_api = get_model_api(model_type)
@@ -411,7 +220,8 @@ def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt
             prompt += "\nExplain which is correct and why. Answer with the letter (A, B, or C)."
         
         # Call the model API
-        print(f"[{i+1}/{total_examples}] Calling {model_type} API for example in category: {row['Category']}")
+        api_name = "MOCK" if model_type == "mock" else model_type.upper()
+        print(f"[{i+1}/{total_examples}] Calling {api_name} API for example in category: {row['Category']}")
         
         if prompt_strategy in ["self_consistency", "maj32"]:
             num_samples = 5 if prompt_strategy == "self_consistency" else 32
@@ -463,7 +273,9 @@ def main():
         args.model_name,
         args.prompt_strategy,
         args.delay, 
-        args.max_examples
+        args.max_examples,
+        args.max_retries if hasattr(args, 'max_retries') else 5,
+        args.base_delay if hasattr(args, 'base_delay') else 2.0
     )
 
 if __name__ == "__main__":

@@ -1,0 +1,33 @@
+{
+  "run_id": "stereoset_20250521_183534_mock",
+  "completed_steps": [
+    "prepare",
+    "evaluate",
+    "analyze"
+  ],
+  "paths": {
+    "run_dir": "results/stereoset/stereoset_20250521_183534_mock",
+    "dataset_path": "results/stereoset/stereoset_20250521_183534_mock/dataset/stereoset_samples.csv",
+    "predictions_path": "results/stereoset/stereoset_20250521_183534_mock/predictions/model_predictions.csv",
+    "analysis_dir": "results/stereoset/stereoset_20250521_183534_mock/analysis"
+  },
+  "args": {
+    "num_examples": 5,
+    "bias_types": null,
+    "seed": 42,
+    "model_type": "mock",
+    "model_name": "mock",
+    "prompt_strategy": "baseline",
+    "delay": 1.0,
+    "max_examples": 5,
+    "max_retries": 5,
+    "base_delay": 2.0,
+    "results_dir": "results",
+    "run_id": "stereoset_20250521_183534_mock",
+    "skip_prepare": false,
+    "skip_evaluate": false,
+    "skip_analyze": false,
+    "checkpoint": null,
+    "save_checkpoint": true
+  }
+}

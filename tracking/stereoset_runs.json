@@ -1,0 +1,60 @@
+{
+  "stereoset_20250511_163454_mock_model": {
+    "model_name": "mock-model",
+    "model_type": "mock",
+    "num_examples": 5,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250511_163454_mock_model",
+    "timestamp": "2025-05-11T16:35:02.583448"
+  },
+  "stereoset_20250514_184430_mock_model": {
+    "model_name": "mock-model",
+    "model_type": "mock",
+    "num_examples": 5,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250514_184430_mock_model",
+    "timestamp": "2025-05-14T18:44:39.337282"
+  },
+  "stereoset_20250514_184642_mock_model": {
+    "model_name": "mock-model",
+    "model_type": "mock",
+    "num_examples": 5,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250514_184642_mock_model",
+    "timestamp": "2025-05-14T18:46:51.553515"
+  },
+  "stereoset_20250514_184724_mock_model": {
+    "model_name": "mock-model",
+    "model_type": "mock",
+    "num_examples": 5,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250514_184724_mock_model",
+    "timestamp": "2025-05-14T18:47:32.819398"
+  },
+  "stereoset_20250521_183534_mock": {
+    "metrics": {
+      "icat_score": 0.48,
+      "language_modeling_score": 0.8,
+      "stereotype_score": 0.4
+    },
+    "model_name": "mock",
+    "model_type": "mock",
+    "num_examples": 5,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250521_183534_mock",
+    "timestamp": "2025-05-21T18:35:43.067003"
+  },
+  "stereoset_20250521_183558_mock": {
+    "metrics": {
+      "icat_score": 0.4,
+      "language_modeling_score": 1.0,
+      "stereotype_score": 0.6
+    },
+    "model_name": "mistralai/Mistral-7B-Instruct-v0.1",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250521_183558_mock",
+    "timestamp": "2025-05-21T18:36:38.674801"
+  }
+}
