@@ -61,5 +61,23 @@
     "results_dir": "results/bbq/bbq_20250521_183308_mock",
     "split": "all",
     "timestamp": "2025-05-21T18:33:46.214327"
+  },
+  "bbq_20250601_104829_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250601_104829_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-01T10:52:30.251627"
+  },
+  "bbq_20250601_110003_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250601_110003_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-02T00:39:49.397829"
   }
 }
