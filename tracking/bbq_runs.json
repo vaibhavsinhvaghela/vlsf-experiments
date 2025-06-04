@@ -79,5 +79,50 @@
     "results_dir": "results/bbq/bbq_20250601_110003_qwen_qwen2.5_72b_instruct_turbo",
     "split": "all",
     "timestamp": "2025-06-02T00:39:49.397829"
+  },
+  "bbq_20250602_112412_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "cot",
+    "results_dir": "results/bbq/bbq_20250602_112412_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-03T13:29:20.840707"
+  },
+  "bbq_20250602_112435_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "few_shot",
+    "results_dir": "results/bbq/bbq_20250602_112435_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-03T12:42:48.570516"
+  },
+  "bbq_20250602_112447_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "bias_aware",
+    "results_dir": "results/bbq/bbq_20250602_112447_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-03T13:44:41.183219"
+  },
+  "bbq_20250602_112500_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "structured",
+    "results_dir": "results/bbq/bbq_20250602_112500_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-03T15:46:11.137652"
+  },
+  "bbq_20250602_112512_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "contrastive",
+    "results_dir": "results/bbq/bbq_20250602_112512_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-03T17:21:56.090762"
   }
 }
