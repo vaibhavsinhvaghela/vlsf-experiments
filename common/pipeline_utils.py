@@ -9,11 +9,23 @@ import sys
 import datetime
 from pathlib import Path
 
-def generate_run_id(dataset_name, model_name):
-    """Generate a unique run ID based on timestamp, dataset, and model name"""
+def generate_run_id(dataset_name, model_name, dataset_type=None):
+    """Generate a unique run ID based on timestamp, dataset, model name and dataset type"""
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     model_slug = model_name.replace("/", "_").replace("-", "_").lower()
-    return f"{dataset_name}_{timestamp}_{model_slug}"
+    
+    # Simple concatenation with underscore separators
+    components = [dataset_name, timestamp]
+    
+    # Add dataset_type if provided
+    if dataset_type:
+        components.append(dataset_type)
+    
+    # Add model slug
+    components.append(model_slug)
+    
+    # Join all components with underscores
+    return "_".join(components)
 
 def setup_directories(base_dir, dataset_name, run_id):
     """Create and return paths to the organized directory structure"""

@@ -19,6 +19,7 @@ import datetime
 import json
 import backoff
 from pathlib import Path
+import shutil
 
 # Import StereoSet modules
 from stereoset.prepare_stereoset_dataset import create_results_file
@@ -55,6 +56,12 @@ def parse_arguments():
                        help="Maximum number of retries for API calls")
     parser.add_argument("--base_delay", type=float, default=2.0,
                        help="Base delay for exponential backoff in seconds")
+    
+    # Allow using an externally prepared CSV like BBQ pipeline
+    parser.add_argument("--input", type=str, default=None,
+                        help="Path to an existing StereoSet CSV to evaluate (skip prepare)")
+    parser.add_argument("--dataset_type", type=str, default=None,
+                        help="Type of dataset (pca or semantic)")
     
     # Output organization
     parser.add_argument("--results_dir", type=str, default="results",
@@ -113,15 +120,20 @@ def load_checkpoint(checkpoint_path):
 )
 def run_prepare_step(paths, args):
     """Run the preparation step with backoff for retries"""
-    bias_types = args.bias_types.split(",") if args.bias_types else None
-    create_results_file(
-        output_path=str(paths["dataset_path"]),
-        num_examples=args.num_examples,
-        bias_type=bias_types[0] if bias_types else "all",
-        categories=None,  # Use all categories
-        split="validation",  # Use validation split
-        seed=args.seed
-    )
+    if args.input:
+        print(f"Using existing dataset file: {args.input}")
+        shutil.copy(args.input, paths["dataset_path"])
+        print(f"Copied to: {paths['dataset_path']}")
+    else:
+        bias_types = args.bias_types.split(",") if args.bias_types else None
+        create_results_file(
+            output_path=str(paths["dataset_path"]),
+            num_examples=args.num_examples,
+            bias_type=bias_types[0] if bias_types else "all",
+            categories=None,  # Use all categories
+            split="validation",  # Use validation split
+            seed=args.seed
+        )
     return True
 
 @backoff.on_exception(
@@ -191,13 +203,21 @@ def main():
         else:
             # Generate run ID if not provided and no valid checkpoint
             if not args.run_id:
-                args.run_id = generate_run_id("stereoset", args.model_name)
+                # Use provided dataset_type or try to infer from input path
+                dataset_type = args.dataset_type
+                if not dataset_type and args.input and ("pca" in args.input.lower() or "semantic" in args.input.lower()):
+                    dataset_type = "pca" if "pca" in args.input.lower() else "semantic"
+                args.run_id = generate_run_id("stereoset", args.model_name, dataset_type)
             # Setup directory structure
             paths = setup_directories(args.results_dir, "stereoset", args.run_id)
     else:
         # Generate run ID if not provided
         if not args.run_id:
-            args.run_id = generate_run_id("stereoset", args.model_name)
+            # Use provided dataset_type or try to infer from input path
+            dataset_type = args.dataset_type
+            if not dataset_type and args.input and ("pca" in args.input.lower() or "semantic" in args.input.lower()):
+                dataset_type = "pca" if "pca" in args.input.lower() else "semantic"
+            args.run_id = generate_run_id("stereoset", args.model_name, dataset_type)
         # Setup directory structure
         paths = setup_directories(args.results_dir, "stereoset", args.run_id)
     
@@ -242,6 +262,25 @@ def main():
     
     print(f"\nStereoSet pipeline completed successfully!")
     print(f"Results saved to: {paths['run_dir']}")
+    
+    # Create run metadata
+    metadata = {
+        "model_name": args.model_name,
+        "model_type": args.model_type,
+        "prompt_strategy": args.prompt_strategy,
+        "num_examples": args.num_examples or "all",
+        "results_dir": str(paths["run_dir"]),
+        "timestamp": datetime.datetime.now().isoformat()
+    }
+    
+    # Add input CSV path if provided
+    if args.input:
+        metadata["input_csv"] = args.input
+        # Determine dataset type from input path
+        if "pca" in args.input.lower():
+            metadata["dataset_type"] = "pca"
+        elif "semantic" in args.input.lower():
+            metadata["dataset_type"] = "semantic"
     
     # Create a summary file with the run configuration
     summary_path = paths["run_dir"] / "run_summary.txt"
@@ -291,6 +330,39 @@ def main():
             except Exception:
                 pass
         
+        # Create metadata for tracking
+        metadata = {
+            "model_name": args.model_name,
+            "model_type": args.model_type,
+            "prompt_strategy": args.prompt_strategy,
+            "num_examples": args.num_examples or "all",
+            "bias_types": args.bias_types or "all",
+            "results_dir": str(paths["run_dir"]),
+            "timestamp": datetime.datetime.now().isoformat()
+        }
+        
+        # Add input CSV path if provided
+        if args.input:
+            metadata["input_csv"] = args.input
+            
+        # Use provided dataset_type or try to infer from input path
+        if args.dataset_type:
+            metadata["dataset_type"] = args.dataset_type
+        elif args.input and ("pca" in args.input.lower() or "semantic" in args.input.lower()):
+            metadata["dataset_type"] = "pca" if "pca" in args.input.lower() else "semantic"
+        
+        # Initialize metrics (will be updated after analysis)
+        metrics = {}
+        
+        # Try to load metrics from analysis if available
+        analysis_file = paths.get("analysis_dir") / "metrics.json"
+        if analysis_file.exists():
+            try:
+                with open(analysis_file, 'r') as f:
+                    metrics = json.load(f)
+            except Exception as e:
+                print(f"Warning: Could not load metrics from {analysis_file}: {e}")
+                
         # Add run to tracking
         add_run(
             dataset_type="stereoset",
@@ -301,7 +373,9 @@ def main():
             prompt_strategy=args.prompt_strategy,
             bias_types=args.bias_types,
             results_dir=str(paths["run_dir"]),
-            metrics=metrics
+            metrics=metrics,
+            input_csv=metadata.get("input_csv"),
+            dataset_subtype=metadata.get("dataset_type")
         )
         print("Run added to tracking system.")
     except Exception as e:

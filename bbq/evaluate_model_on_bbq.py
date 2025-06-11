@@ -109,6 +109,7 @@ def call_together_api(prompt, model_name, prompt_strategy="baseline", max_retrie
     """
     if not TOGETHER_API_KEY:
         raise ValueError("TOGETHER_API_KEY not found in .env file")
+
 def get_few_shot_examples():
     """
     Return a list of few-shot examples for BBQ dataset.
@@ -176,7 +177,7 @@ def evaluate_bbq_dataset(input_file, output_file, model_type, model_name, prompt
         question = row["Question"].strip()
         
         # Build the prompt based on strategy
-        if prompt_strategy == "baseline":
+        if prompt_strategy in ["baseline", "self_consistency", "maj32"]:
             prompt = f"{context}\n\nQuestion: {question}\n\n"
             for letter, text in choices.items():
                 prompt += f"({letter}) {text}\n"

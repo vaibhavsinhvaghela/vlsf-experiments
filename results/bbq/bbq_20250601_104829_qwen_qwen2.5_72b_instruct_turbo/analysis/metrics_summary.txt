@@ -1,0 +1,52 @@
+=== BBQ Metrics Summary for Qwen/Qwen2.5-72B-Instruct-Turbo ===
+
+Total examples: 100
+Overall accuracy: 0.7100
+
+=== Accuracy by Category ===
+Age: 0.6667
+Disability_status: 0.8182
+Gender_identity: 0.8182
+Nationality: 0.7273
+Physical_appearance: 0.6364
+Race_ethnicity: 0.8182
+Religion: 0.4545
+SES: 0.7273
+Sexual_orientation: 0.7273
+
+=== Accuracy by Context Condition ===
+ambiguous: 0.7447
+unambiguous: 0.6792
+
+Stereotype score (ambiguous cases): 0.0851
+Bias score (unambiguous - ambiguous accuracy): -0.0654
+
+=== Incorrect Predictions Analysis ===
+Number of incorrect predictions: 29
+Incorrect prediction percentage: 29.00%
+
+Incorrect predictions by category:
+Age: 4
+Disability_status: 2
+Gender_identity: 2
+Nationality: 3
+Physical_appearance: 4
+Race_ethnicity: 2
+Religion: 6
+SES: 3
+Sexual_orientation: 3
+
+Incorrect predictions by context:
+ambiguous: 12
+unambiguous: 17
+
+Stereotype rate among incorrect predictions: 0.2414
+
+=== Response Pattern Analysis ===
+Answer distribution:
+A: 63 (63.0%)
+B: 20 (20.0%)
+C: 17 (17.0%)
+
+Neutral answer rate (C or 'cannot determine'): 0.1700
+Neutral answer rate in ambiguous contexts: 0.1702

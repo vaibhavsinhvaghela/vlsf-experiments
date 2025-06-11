@@ -61,5 +61,211 @@
     "results_dir": "results/bbq/bbq_20250521_183308_mock",
     "split": "all",
     "timestamp": "2025-05-21T18:33:46.214327"
+  },
+  "bbq_20250601_104829_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250601_104829_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-01T10:52:30.251627"
+  },
+  "bbq_20250601_110003_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250601_110003_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-02T00:39:49.397829"
+  },
+  "bbq_20250602_112412_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "cot",
+    "results_dir": "results/bbq/bbq_20250602_112412_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-03T13:29:20.840707"
+  },
+  "bbq_20250602_112435_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "few_shot",
+    "results_dir": "results/bbq/bbq_20250602_112435_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-03T12:42:48.570516"
+  },
+  "bbq_20250602_112447_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "bias_aware",
+    "results_dir": "results/bbq/bbq_20250602_112447_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-03T13:44:41.183219"
+  },
+  "bbq_20250602_112500_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "structured",
+    "results_dir": "results/bbq/bbq_20250602_112500_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-03T15:46:11.137652"
+  },
+  "bbq_20250602_112512_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100000,
+    "prompt_strategy": "contrastive",
+    "results_dir": "results/bbq/bbq_20250602_112512_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-03T17:21:56.090762"
+  },
+  "bbq_20250610_233842_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/bbq_pca_lhs_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250610_233842_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-10T23:41:33.695372"
+  },
+  "bbq_20250610_234218_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/bbq_pca_lhs_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250610_234218_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-10T23:45:21.319601"
+  },
+  "bbq_20250610_234522_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/bbq_pca_lhs_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "cot",
+    "results_dir": "results/bbq/bbq_20250610_234522_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-10T23:48:50.899863"
+  },
+  "bbq_20250610_234852_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/bbq_pca_lhs_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "few_shot",
+    "results_dir": "results/bbq/bbq_20250610_234852_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-10T23:52:19.404538"
+  },
+  "bbq_20250610_235221_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/bbq_pca_lhs_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "bias_aware",
+    "results_dir": "results/bbq/bbq_20250610_235221_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-10T23:55:47.466066"
+  },
+  "bbq_20250610_235549_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/bbq_pca_lhs_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "structured",
+    "results_dir": "results/bbq/bbq_20250610_235549_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-10T23:58:52.794278"
+  },
+  "bbq_20250610_235853_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/bbq_pca_lhs_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "contrastive",
+    "results_dir": "results/bbq/bbq_20250610_235853_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-11T00:11:58.412729"
+  },
+  "bbq_20250611_003947_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/bbq_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/bbq/bbq_20250611_003947_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-11T00:43:55.671718"
+  },
+  "bbq_20250611_004357_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/bbq_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "cot",
+    "results_dir": "results/bbq/bbq_20250611_004357_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-11T00:47:13.637413"
+  },
+  "bbq_20250611_004715_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/bbq_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "few_shot",
+    "results_dir": "results/bbq/bbq_20250611_004715_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-11T00:49:51.937183"
+  },
+  "bbq_20250611_004953_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/bbq_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "bias_aware",
+    "results_dir": "results/bbq/bbq_20250611_004953_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-11T00:53:03.969268"
+  },
+  "bbq_20250611_005306_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/bbq_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "structured",
+    "results_dir": "results/bbq/bbq_20250611_005306_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-11T00:57:25.318047"
+  },
+  "bbq_20250611_005728_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/bbq_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "contrastive",
+    "results_dir": "results/bbq/bbq_20250611_005728_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "split": "all",
+    "timestamp": "2025-06-11T01:01:24.340790"
   }
 }

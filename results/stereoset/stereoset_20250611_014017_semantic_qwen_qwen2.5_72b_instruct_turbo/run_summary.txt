@@ -1,0 +1,19 @@
+StereoSet Evaluation Pipeline Summary
+=====================================
+
+Run ID: stereoset_20250611_014017_semantic_qwen_qwen2.5_72b_instruct_turbo
+Timestamp: 2025-06-11 01:43:10
+
+Configuration:
+  Model: Qwen/Qwen2.5-72B-Instruct-Turbo
+  Model Type: together
+  Prompt Strategy: contrastive
+  Dataset: StereoSet
+  Examples: 100
+  Bias Types: all
+  Completed Steps: ['prepare', 'evaluate', 'analyze']
+
+Results Location:
+  Dataset: results/stereoset/stereoset_20250611_014017_semantic_qwen_qwen2.5_72b_instruct_turbo/dataset/stereoset_samples.csv
+  Predictions: results/stereoset/stereoset_20250611_014017_semantic_qwen_qwen2.5_72b_instruct_turbo/predictions/model_predictions.csv
+  Analysis: results/stereoset/stereoset_20250611_014017_semantic_qwen_qwen2.5_72b_instruct_turbo/analysis
