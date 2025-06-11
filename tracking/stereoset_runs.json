@@ -31,7 +31,64 @@
     "results_dir": "results/stereoset/stereoset_20250514_184724_mock_model",
     "timestamp": "2025-05-14T18:47:32.819398"
   },
+  "stereoset_20250518_172103_mock_model": {
+    "model_name": "mock-model",
+    "model_type": "mock",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250518_172103_mock_model",
+    "timestamp": "2025-06-11T01:16:46.238906"
+  },
+  "stereoset_20250518_172342_mistralai_mistral_7b_instruct_v0.1": {
+    "model_name": "mistralai/Mistral-7B-Instruct-v0.1",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250518_172342_mistralai_mistral_7b_instruct_v0.1",
+    "timestamp": "2025-06-11T01:16:46.247081"
+  },
+  "stereoset_20250518_172530_mistralai_mistral_7b_instruct_v0.1": {
+    "model_name": "mistralai/Mistral-7B-Instruct-v0.1",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250518_172530_mistralai_mistral_7b_instruct_v0.1",
+    "timestamp": "2025-06-11T01:16:46.244349"
+  },
+  "stereoset_20250518_172606_mistralai_mistral_7b_instruct_v0.1": {
+    "model_name": "mistralai/Mistral-7B-Instruct-v0.1",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250518_172606_mistralai_mistral_7b_instruct_v0.1",
+    "timestamp": "2025-06-11T01:16:46.241909"
+  },
+  "stereoset_20250518_172743_mistralai_mistral_7b_instruct_v0.1": {
+    "model_name": "mistralai/Mistral-7B-Instruct-v0.1",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250518_172743_mistralai_mistral_7b_instruct_v0.1",
+    "timestamp": "2025-06-11T01:16:46.241541"
+  },
+  "stereoset_20250521_180451_mock": {
+    "model_name": "mock-model",
+    "model_type": "mock",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250521_180451_mock",
+    "timestamp": "2025-06-11T01:16:46.240887"
+  },
+  "stereoset_20250521_180624_mock": {
+    "model_name": "mock-model",
+    "model_type": "mock",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250521_180624_mock",
+    "timestamp": "2025-06-11T01:16:46.244007"
+  },
   "stereoset_20250521_183534_mock": {
+    "input_csv": "results/stereoset/stereoset_20250521_183534_mock/dataset/stereoset_samples.csv",
     "metrics": {
       "icat_score": 0.48,
       "language_modeling_score": 0.8,
@@ -43,6 +100,15 @@
     "prompt_strategy": "baseline",
     "results_dir": "results/stereoset/stereoset_20250521_183534_mock",
     "timestamp": "2025-05-21T18:35:43.067003"
+  },
+  "stereoset_20250521_183545_mock": {
+    "input_csv": "results/stereoset/stereoset_20250521_183545_mock/dataset/stereoset_samples.csv",
+    "model_name": "mock-model",
+    "model_type": "mock",
+    "num_examples": 5,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250521_183545_mock",
+    "timestamp": "2025-06-11T01:16:46.241279"
   },
   "stereoset_20250521_183558_mock": {
     "metrics": {
@@ -56,5 +122,189 @@
     "prompt_strategy": "baseline",
     "results_dir": "results/stereoset/stereoset_20250521_183558_mock",
     "timestamp": "2025-05-21T18:36:38.674801"
+  },
+  "stereoset_20250610_232857_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250610_232857_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.243211"
+  },
+  "stereoset_20250610_232858_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250610_232858_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.239499"
+  },
+  "stereoset_20250610_232859_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250610_232859_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.245360"
+  },
+  "stereoset_20250610_232900_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250610_232900_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.244681"
+  },
+  "stereoset_20250610_232902_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250610_232902_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.242875"
+  },
+  "stereoset_20250610_232903_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250610_232903_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.243556"
+  },
+  "stereoset_20250610_232904_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250610_232904_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.239732"
+  },
+  "stereoset_20250610_232905_qwen_qwen2.5_72b_instruct_turbo": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250610_232905_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.245015"
+  },
+  "stereoset_20250611_010554_pca_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/stereoset/stereoset_20250611_010554_pca_qwen_qwen2.5_72b_instruct_turbo/dataset/stereoset_samples.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250611_010554_pca_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.240217"
+  },
+  "stereoset_20250611_010817_pca_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/stereoset/stereoset_20250611_010817_pca_qwen_qwen2.5_72b_instruct_turbo/dataset/stereoset_samples.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250611_010817_pca_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.242518"
+  },
+  "stereoset_20250611_011048_pca_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/stereoset/stereoset_20250611_011048_pca_qwen_qwen2.5_72b_instruct_turbo/dataset/stereoset_samples.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250611_011048_pca_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.247758"
+  },
+  "stereoset_20250611_011408_pca_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/stereoset/stereoset_20250611_011408_pca_qwen_qwen2.5_72b_instruct_turbo/dataset/stereoset_samples.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250611_011408_pca_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:16:46.240650"
+  },
+  "stereoset_20250611_011700_pca_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/stereoset_pca_lhs_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "structured",
+    "results_dir": "results/stereoset/stereoset_20250611_011700_pca_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:20:42.333556"
+  },
+  "stereoset_20250611_012043_pca_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "pca",
+    "input_csv": "results/stereoset_pca_lhs_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "contrastive",
+    "results_dir": "results/stereoset/stereoset_20250611_012043_pca_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:23:33.117465"
+  },
+  "stereoset_20250611_012334_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/stereoset_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "baseline",
+    "results_dir": "results/stereoset/stereoset_20250611_012334_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:27:05.816655"
+  },
+  "stereoset_20250611_012707_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/stereoset_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "cot",
+    "results_dir": "results/stereoset/stereoset_20250611_012707_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:30:39.277647"
+  },
+  "stereoset_20250611_013041_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/stereoset_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "few_shot",
+    "results_dir": "results/stereoset/stereoset_20250611_013041_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:33:53.294483"
+  },
+  "stereoset_20250611_013355_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/stereoset_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "bias_aware",
+    "results_dir": "results/stereoset/stereoset_20250611_013355_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:36:22.376764"
+  },
+  "stereoset_20250611_013624_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/stereoset_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "structured",
+    "results_dir": "results/stereoset/stereoset_20250611_013624_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:40:16.033628"
+  },
+  "stereoset_20250611_014017_semantic_qwen_qwen2.5_72b_instruct_turbo": {
+    "dataset_type": "semantic",
+    "input_csv": "results/stereoset_semantic_100.csv",
+    "model_name": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "model_type": "together",
+    "num_examples": 100,
+    "prompt_strategy": "contrastive",
+    "results_dir": "results/stereoset/stereoset_20250611_014017_semantic_qwen_qwen2.5_72b_instruct_turbo",
+    "timestamp": "2025-06-11T01:43:10.337375"
   }
 }

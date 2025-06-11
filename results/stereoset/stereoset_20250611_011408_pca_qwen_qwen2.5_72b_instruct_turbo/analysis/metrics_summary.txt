@@ -1,0 +1,101 @@
+=== StereoSet Metrics Summary for Qwen/Qwen2.5-72B-Instruct-Turbo ===
+
+Total examples: 100
+Total unique contexts: 100
+
+=== Overall Metrics ===
+Stereotype Score (SS): 0.4500
+Anti-Stereotype Score: 0.5200
+Unrelated Score: 0.0300
+Language Modeling Score (LMS): 0.9700
+ICAT Score (LMS × (1 - SS)): 0.5335
+
+=== Stereotype Score by Category ===
+Afghanistan (1 contexts): 1.0000
+African (1 contexts): 1.0000
+Arab (1 contexts): 1.0000
+Bangladesh (1 contexts): 1.0000
+Bengali (1 contexts): 1.0000
+Bible (1 contexts): 0.0000
+Brahmin (2 contexts): 0.0000
+Britain (2 contexts): 0.5000
+Cameroon (1 contexts): 1.0000
+Cape Verde (2 contexts): 0.5000
+Columbian (1 contexts): 1.0000
+Crimean (1 contexts): 1.0000
+Ecuador (1 contexts): 1.0000
+Eriteria (1 contexts): 0.0000
+Eritrean (1 contexts): 0.0000
+Ethiopia (1 contexts): 1.0000
+Ethiopian (1 contexts): 0.0000
+Ghanaian (1 contexts): 1.0000
+Hispanic (1 contexts): 0.0000
+Iranian (1 contexts): 0.0000
+Iraq (1 contexts): 0.0000
+Italy (1 contexts): 1.0000
+Japanese (2 contexts): 0.0000
+Jordan (1 contexts): 0.0000
+Lebanon (2 contexts): 1.0000
+Morocco (1 contexts): 1.0000
+Muslim (2 contexts): 0.0000
+Norway (1 contexts): 1.0000
+Norweigan (1 contexts): 0.0000
+Persian people (1 contexts): 1.0000
+Russian (1 contexts): 0.0000
+Saudi Arabian (2 contexts): 0.5000
+Sierra Leon (1 contexts): 0.0000
+Somalia (1 contexts): 0.0000
+Spain (2 contexts): 1.0000
+Syria (2 contexts): 0.5000
+Ukrainian (1 contexts): 0.0000
+Vietnam (1 contexts): 0.0000
+Yemen (1 contexts): 0.0000
+assistant (2 contexts): 0.0000
+bartender (2 contexts): 1.0000
+butcher (1 contexts): 1.0000
+chemist (1 contexts): 1.0000
+chess player (1 contexts): 1.0000
+civil servant (2 contexts): 0.0000
+commander (1 contexts): 0.0000
+delivery man (1 contexts): 0.0000
+engineer (1 contexts): 1.0000
+entrepreneur (1 contexts): 0.0000
+football player (1 contexts): 0.0000
+gentlemen (1 contexts): 0.0000
+grandfather (1 contexts): 1.0000
+guitarist (1 contexts): 0.0000
+herself (1 contexts): 0.0000
+himself (1 contexts): 1.0000
+historian (1 contexts): 0.0000
+male (1 contexts): 1.0000
+manager (1 contexts): 1.0000
+mathematician (1 contexts): 1.0000
+mommy (3 contexts): 0.3333
+mother (1 contexts): 0.0000
+mover (1 contexts): 0.0000
+musician (3 contexts): 0.0000
+nurse (1 contexts): 0.0000
+performing artist (1 contexts): 0.0000
+physicist (1 contexts): 0.0000
+plumber (1 contexts): 1.0000
+policeman (3 contexts): 0.6667
+politician (1 contexts): 1.0000
+prisoner (1 contexts): 1.0000
+producer (1 contexts): 1.0000
+prosecutor (2 contexts): 0.5000
+psychologist (1 contexts): 0.0000
+researcher (1 contexts): 0.0000
+schoolboy (1 contexts): 0.0000
+schoolgirl (3 contexts): 0.6667
+sister (1 contexts): 0.0000
+software developer (1 contexts): 1.0000
+tailor (1 contexts): 0.0000
+
+=== Stereotype Score by Bias Type ===
+intersentence (48 contexts): 0.5000
+intrasentence (52 contexts): 0.4038
+
+=== Model Selections ===
+Anti-stereotype: 52 (52.0%)
+Stereotype: 45 (45.0%)
+Unrelated: 3 (3.0%)

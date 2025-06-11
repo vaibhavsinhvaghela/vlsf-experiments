@@ -15,7 +15,7 @@ import os
 import sys
 import re
 import argparse
-from datetime import datetime
+import datetime
 import json
 import backoff
 from pathlib import Path
@@ -60,6 +60,8 @@ def parse_arguments():
     # Allow using an externally prepared CSV like BBQ pipeline
     parser.add_argument("--input", type=str, default=None,
                         help="Path to an existing StereoSet CSV to evaluate (skip prepare)")
+    parser.add_argument("--dataset_type", type=str, default=None,
+                        help="Type of dataset (pca or semantic)")
     
     # Output organization
     parser.add_argument("--results_dir", type=str, default="results",
@@ -201,9 +203,9 @@ def main():
         else:
             # Generate run ID if not provided and no valid checkpoint
             if not args.run_id:
-                # Extract dataset type directly from input path if available
-                dataset_type = None
-                if args.input and ("pca" in args.input.lower() or "semantic" in args.input.lower()):
+                # Use provided dataset_type or try to infer from input path
+                dataset_type = args.dataset_type
+                if not dataset_type and args.input and ("pca" in args.input.lower() or "semantic" in args.input.lower()):
                     dataset_type = "pca" if "pca" in args.input.lower() else "semantic"
                 args.run_id = generate_run_id("stereoset", args.model_name, dataset_type)
             # Setup directory structure
@@ -211,9 +213,9 @@ def main():
     else:
         # Generate run ID if not provided
         if not args.run_id:
-            # Extract dataset type directly from input path if available
-            dataset_type = None
-            if args.input and ("pca" in args.input.lower() or "semantic" in args.input.lower()):
+            # Use provided dataset_type or try to infer from input path
+            dataset_type = args.dataset_type
+            if not dataset_type and args.input and ("pca" in args.input.lower() or "semantic" in args.input.lower()):
                 dataset_type = "pca" if "pca" in args.input.lower() else "semantic"
             args.run_id = generate_run_id("stereoset", args.model_name, dataset_type)
         # Setup directory structure
@@ -268,7 +270,7 @@ def main():
         "prompt_strategy": args.prompt_strategy,
         "num_examples": args.num_examples or "all",
         "results_dir": str(paths["run_dir"]),
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.datetime.now().isoformat()
     }
     
     # Add input CSV path if provided
@@ -296,7 +298,7 @@ def main():
         summary_path=summary_path,
         title="StereoSet Evaluation Pipeline",
         run_id=args.run_id,
-        timestamp=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        timestamp=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         config=config,
         paths=paths
     )
@@ -342,9 +344,24 @@ def main():
         # Add input CSV path if provided
         if args.input:
             metadata["input_csv"] = args.input
-            # Extract dataset type directly from input path if available
-            if "pca" in args.input.lower() or "semantic" in args.input.lower():
-                metadata["dataset_type"] = "pca" if "pca" in args.input.lower() else "semantic"
+            
+        # Use provided dataset_type or try to infer from input path
+        if args.dataset_type:
+            metadata["dataset_type"] = args.dataset_type
+        elif args.input and ("pca" in args.input.lower() or "semantic" in args.input.lower()):
+            metadata["dataset_type"] = "pca" if "pca" in args.input.lower() else "semantic"
+        
+        # Initialize metrics (will be updated after analysis)
+        metrics = {}
+        
+        # Try to load metrics from analysis if available
+        analysis_file = paths.get("analysis_dir") / "metrics.json"
+        if analysis_file.exists():
+            try:
+                with open(analysis_file, 'r') as f:
+                    metrics = json.load(f)
+            except Exception as e:
+                print(f"Warning: Could not load metrics from {analysis_file}: {e}")
                 
         # Add run to tracking
         add_run(
