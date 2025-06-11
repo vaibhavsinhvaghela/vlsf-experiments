@@ -1,0 +1,20 @@
+BBQ Evaluation Pipeline Summary
+===============================
+
+Run ID: bbq_20250610_235853_qwen_qwen2.5_72b_instruct_turbo
+Timestamp: 2025-06-11 00:03:11
+
+Configuration:
+  Model: Qwen/Qwen2.5-72B-Instruct-Turbo
+  Model Type: together
+  Prompt Strategy: contrastive
+  Dataset: BBQ
+  Examples: 100
+  Categories: all
+  Split: all
+  Completed Steps: ['prepare', 'evaluate', 'analyze']
+
+Results Location:
+  Dataset: results/bbq/bbq_20250610_235853_qwen_qwen2.5_72b_instruct_turbo/dataset/bbq_samples.csv
+  Predictions: results/bbq/bbq_20250610_235853_qwen_qwen2.5_72b_instruct_turbo/predictions/model_predictions.csv
+  Analysis: results/bbq/bbq_20250610_235853_qwen_qwen2.5_72b_instruct_turbo/analysis

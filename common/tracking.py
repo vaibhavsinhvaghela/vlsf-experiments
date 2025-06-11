@@ -43,7 +43,9 @@ def add_run(
     bias_types: Optional[str] = None,
     split: Optional[str] = None,
     results_dir: str = None,
-    metrics: Optional[Dict[str, Any]] = None
+    metrics: Optional[Dict[str, Any]] = None,
+    input_csv: Optional[str] = None,
+    dataset_subtype: Optional[str] = None
 ) -> None:
     """
     Add a new run to the tracking file.
@@ -60,6 +62,8 @@ def add_run(
         split: Dataset split used
         results_dir: Directory containing the results
         metrics: Dictionary of metrics from the evaluation
+        input_csv: Path to the input CSV file used for evaluation
+        dataset_subtype: Type of dataset used (e.g., 'pca', 'semantic')
     """
     # Ensure tracking directory exists
     ensure_tracking_dir()
@@ -94,6 +98,10 @@ def add_run(
         run_entry["split"] = split
     if metrics:
         run_entry["metrics"] = metrics
+    if input_csv:
+        run_entry["input_csv"] = input_csv
+    if dataset_subtype:
+        run_entry["dataset_type"] = dataset_subtype
     
     # Add to tracking data
     tracking_data[run_id] = run_entry

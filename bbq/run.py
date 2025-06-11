@@ -14,7 +14,7 @@ Usage:
 import os
 import sys
 import argparse
-import datetime
+from datetime import datetime
 import json
 import backoff
 from pathlib import Path
@@ -30,15 +30,17 @@ from common.pipeline_utils import generate_run_id, setup_directories, write_summ
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Run the complete BBQ evaluation pipeline")
     
-    # Dataset preparation arguments
+    # Dataset parameters
     parser.add_argument("--num_examples", type=int, default=100,
-                       help="Number of examples to sample from the dataset")
+                       help="Number of examples to sample (default: 100)")
     parser.add_argument("--categories", type=str, default=None,
                        help="Comma-separated list of categories to include (default: all)")
     parser.add_argument("--split", type=str, default="all",
-                       help="Dataset split to use: 'train', 'validation', 'test', or 'all'")
+                       help="Dataset split to use: train, test, or all (default: all)")
     parser.add_argument("--seed", type=int, default=42,
-                       help="Random seed for sampling")
+                       help="Random seed for reproducibility")
+    parser.add_argument("--input", type=str, default=None,
+                       help="Path to an existing BBQ dataset CSV file to use instead of generating a new one")
     
     # Model evaluation arguments
     parser.add_argument("--model_type", type=str, default="together",
@@ -113,14 +115,22 @@ def load_checkpoint(checkpoint_path):
 )
 def run_prepare_step(paths, args):
     """Run the preparation step with backoff for retries"""
-    categories = args.categories.split(",") if args.categories else None
-    prepare_bbq_dataset(
-        output_path=str(paths["dataset_path"]),
-        num_examples=args.num_examples,
-        categories=categories,
-        split=args.split,
-        seed=args.seed
-    )
+    # If an input file is provided, copy it to the dataset path
+    if args.input:
+        import shutil
+        print(f"Using existing dataset file: {args.input}")
+        shutil.copy(args.input, paths["dataset_path"])
+        print(f"Copied to: {paths['dataset_path']}")
+    else:
+        # Generate a new dataset
+        categories = args.categories.split(",") if args.categories else None
+        prepare_bbq_dataset(
+            output_path=str(paths["dataset_path"]),
+            num_examples=args.num_examples,
+            categories=categories,
+            split=args.split,
+            seed=args.seed
+        )
     return True
 
 @backoff.on_exception(
@@ -191,13 +201,21 @@ def main():
         else:
             # Generate run ID if not provided and no valid checkpoint
             if not args.run_id:
-                args.run_id = generate_run_id("bbq", args.model_name)
+                # Extract dataset type directly from input path if available
+                dataset_type = None
+                if args.input and ("pca" in args.input.lower() or "semantic" in args.input.lower()):
+                    dataset_type = "pca" if "pca" in args.input.lower() else "semantic"
+                args.run_id = generate_run_id("bbq", args.model_name, dataset_type)
             # Setup directory structure
             paths = setup_directories(args.results_dir, "bbq", args.run_id)
     else:
         # Generate run ID if not provided
         if not args.run_id:
-            args.run_id = generate_run_id("bbq", args.model_name)
+            # Extract dataset type directly from input path if available
+            dataset_type = None
+            if args.input and ("pca" in args.input.lower() or "semantic" in args.input.lower()):
+                dataset_type = "pca" if "pca" in args.input.lower() else "semantic"
+            args.run_id = generate_run_id("bbq", args.model_name, dataset_type)
         # Setup directory structure
         paths = setup_directories(args.results_dir, "bbq", args.run_id)
     
@@ -260,7 +278,7 @@ def main():
         summary_path=summary_path,
         title="BBQ Evaluation Pipeline",
         run_id=args.run_id,
-        timestamp=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        timestamp=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         config=config,
         paths=paths
     )
@@ -279,18 +297,37 @@ def main():
             except (json.JSONDecodeError, FileNotFoundError):
                 pass
         
+        # Create run metadata
+        metadata = {
+            "model_name": args.model_name,
+            "model_type": args.model_type,
+            "prompt_strategy": args.prompt_strategy,
+            "num_examples": args.max_examples or "all",
+            "split": args.split or "all",
+            "results_dir": str(paths["run_dir"]),
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        # Add input CSV path if provided
+        if args.input:
+            metadata["input_csv"] = args.input
+            # Extract dataset type directly from input path if available
+            if "pca" in args.input.lower() or "semantic" in args.input.lower():
+                metadata["dataset_type"] = "pca" if "pca" in args.input.lower() else "semantic"
+        
         # Add run to tracking
         add_run(
             dataset_type="bbq",
             run_id=args.run_id,
             model_name=args.model_name,
             model_type=args.model_type,
-            num_examples=args.num_examples,
+            num_examples=args.max_examples or 100,
             prompt_strategy=args.prompt_strategy,
-            categories=args.categories,
             split=args.split,
             results_dir=str(paths["run_dir"]),
-            metrics=metrics
+            metrics=metrics,
+            input_csv=metadata.get("input_csv"),
+            dataset_subtype=metadata.get("dataset_type")
         )
         print("Run added to tracking system.")
     except Exception as e:
